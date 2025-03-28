@@ -1,2 +1,6 @@
+#virtual env
 Riccardo_Marega/QML/
 QML/
+#Desktop Services Store
+.DS_Store
+Riccardo_Marega/.DS_Store
