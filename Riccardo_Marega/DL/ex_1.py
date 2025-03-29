@@ -55,6 +55,7 @@ print(eval_size)
 
 # Initialize the model
 model = SimpleMLP().to(device)
+torchsummary.summary(model, (1,28,28))
 
 # Define loss and optimizer
 criterion = nn.BCELoss()
