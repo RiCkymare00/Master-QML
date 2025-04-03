@@ -1,4 +1,4 @@
-# Riccardo's material from the MU1 in Quantum Machine Learning
+# Material from the MU1 in Quantum Machine Learning
 
 All the course notes are available in this page and named as QML_Mod* according to the module they refer to.
 
