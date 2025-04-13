@@ -82,9 +82,7 @@ $$
 
 Then, we apply the ReLU activation function to the pre-activation vector to get the output vector
 $$
-\begin{equation*}
   \begin{pmatrix} h1_{out1} & h2_{out2} \end{pmatrix} = \text{ReLU} \begin{pmatrix} h1_{in1} & h2_{in2} \end{pmatrix}
-\end{equation*}
 $$
 
 This steps are repeated for all layers until the output one where we get the prediction $\hat{y}$ as outcome.
@@ -100,15 +98,11 @@ How to optimize the parameters? Use **gradient descent**.
 Gradient descent is the most-used optimization technique to minimize the error. It means that, for each step, I compute the error and change the parameters in order to minimize it according to its dependence on each parameter. Indeed, the error function depends on $w$ and $b$ through $\hat{y}$, i.e. $error = f(w,b)$ and is called **cost function**.  
 Given the training set $\{ x^{(i)}, y^{(i)} \}_{i=1}^n$, the least square cost function for the $i$-th example is given by
 $$
-\begin{equation*}
   J^{(i)}(w,b) = \frac{1}{2} (\hat{y}^{(i)} - y^{(i)})^2 \ .
-\end{equation*}
 $$
 The mean-squared cost function for the dataset is defined as
 $$
-\begin{equation*}
  J(w,b) = \frac{1}{n} \sum_{i=1}^n J^{(i)}(w,b) \ .
-\end{equation*}
 $$
 
 _Note_:
@@ -130,7 +124,7 @@ The choice of value of the learning rate must be such that the cost function rea
 * if the learning rate is too large I could miss the minimum.
 * if the learning reate is too small I will reach them minimum, but the optimization process would take too long
   
-The best way to solve this problem is to choose an initial value and modify it during the learning, by making it smaller at each step in order to do not miss the minimum.
+The best way to solve this problem is to choose an initial value and modify it during the learning, by reducing the learning rate as we move closer and closer to minimum so that we do not miss the minimum.
 
 ### Backpropagation
 The training of a neural network involves two steps:
@@ -149,15 +143,11 @@ Consider a neural network with one neuron. We compute the cost function via the 
 
 By the chane rule we have that
 $$
-\begin{equation*}
   \frac{\partial J}{\partial w_i} = \frac{\partial J}{\partial \hat{y}} \frac{\partial \hat{y}}{\partial w_i} \ .
-\end{equation*}
 $$
 Since $\hat{y}$ depends on $z$, $\hat{y} = g(z)$, we have 
 $$
-\begin{equation*}
   \frac{\partial \hat{y}}{\partial w_i} = \frac{\partial \hat{y}}{\partial z} \frac{\partial z}{\partial w_i} \ .
-\end{equation*}
 $$
 Combining the two equations above we have
 $$
