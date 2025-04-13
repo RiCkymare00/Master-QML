@@ -51,7 +51,13 @@
 Edge detection is an old-but-gold problem in computer vision that involves detecting edges in an image to determine object boundaries and thus separate the object of interest.
 
 An __edge__ is a point of _rapid change in the intensity_ of the image function. 
-The gradient points in the direction of most rapid increase in the intensity of the
+The gradient points in the direction of most rapid increase in the intensity of the image function
+* the gradient of an image : $\nabla f = (\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y})$
+
+<img src="img/gradient.png" alt="Gradient" width="500">
+
+<a id="Convolutions_basics_concepts"></a>
+
 ## 📸 What does `f(x, y)` represent in image processing?
 
 In the context of **image processing**, the function `f(x, y)` represents:
@@ -62,12 +68,6 @@ In the context of **image processing**, the function `f(x, y)` represents:
 - For a **color image**, you'd typically have three functions:  
   `f_R(x, y)`, `f_G(x, y)`, `f_B(x, y)` — one for each RGB channel (Red, Green, Blue)
 
-image function
-* the gradient of an image : $\nabla f = (\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y})$
-
-<img src="img/gradient.png" alt="Gradient" width="500">
-
-<a id="Convolutions_basics_concepts"></a>
 ## Convolutions: basic concepts
 Convolutions are one of the fundamental elements of computer vision and image processing.
 An image can be seen as a matrix and multiply by a __filter__, that is another matrix.  
@@ -260,6 +260,7 @@ LeNet is one of the **earliest convolutional neural network architectures**, dev
 
 
 <img src="img/Alexnet_2012_architecture.png" alt="Pooling2" width="700">
+
 AlexNet is a deep convolutional neural network architecture that won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in 2012. It was a breakthrough in deep learning for computer vision, significantly outperforming traditional methods.
 
 ### Key characteristics:
