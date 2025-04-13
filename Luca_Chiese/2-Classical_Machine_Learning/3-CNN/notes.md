@@ -427,18 +427,14 @@ TO DO
 ## Loss function
 * For continuous output (regression tasks): __Mean Squred Error (MSE)__
   $$
-  \begin{equation*}
     MSE = \frac{1}{n} \sum_{i=1}^n (t_i - p_i)^2 \ ,
-  \end{equation*}
   $$
   where $t_i$ is the _target_ and $p_i$ is the _prediction_.
 * For _categorical_ output (classification tasks):
   *  __Accuracy__: used only for evalution
   *  __Cross entropy__: used during training
       $$
-      \begin{equation*}
         L_{CE} = - \sum_{i=1}^n t_i \log p_i \ ,
-      \end{equation*}
       $$
       where $t_i$ is the _target_ and $p_i$ is the _prediction_.
 
@@ -465,9 +461,7 @@ $$
 In a multi-class classification task, the __prediction__ $p_i$ is a probability vector: it represents the predicted probabilities of all classes with sum equal to $1$.  
 In a neural network, this prediction is usually made with the last layer activated by a __softmax__  activation function
 $$
-\begin{equation*}
   softmax = \frac{e^{z_i}}{ \sum_{j=1}^k e^{z_j}} \ .
-\end{equation*}
 $$
 The softmax returns in output the probability of an image to belong to each class.
 
@@ -475,32 +469,24 @@ The __target__ represents the probability for all classes, it is a **one-hot enc
 
 In a multi-class classification task one starts by calculating the loss for each class separately and then add it up. The loss for the class $X$ is
 $$
-\begin{equation*}
   loss\_class\_X= - p(X) \log (q(X)) \ ,
-\end{equation*}
 $$
 where $p(X)$ is the probability of class $X$ in target, and $q(X)$ is the probability of class $X$ in predection. If $p(X) = 0$ i.e. the probability in the target is $0$, then $loss\_class\_X=0$. 
 The cross entropy will be given by
 $$
-\begin{equation*}
   cross\_entropy= \sum_X loss\_class\_X \ .
-\end{equation*}
 $$
 
 _Note_: if the target is a one-hot encoded vector (i.e.,it has $1$ in a single position (corresponding to the actual class) and $0$ in all others), then we can actually forget the targets and predictions for all other classes and only calculate the loss for the hot class. In this case we have
 $$
-\begin{equation*}
   loss\_class\_X= - 1 \cdot \log (q(X))  \to \text{categorical cross entropy} \ .
-\end{equation*}
 $$
 
 _Note_: cross-entropy loss also works for distributions that are not one-hot vectors.
 
 In multi-label classification the target can represents multiple classes (or even zero) at the same time. The problem can be considered as a __multiple binary classification__ one. In this case, we calculate the binary cross entropy for each class separately and then add it up to get the complete loss
 $$
-\begin{equation*}
-total\_loss = binary\_cross\_entropy\_class\_A + binary\_cross\_entropy\_class\_B + binary\_cross\_entropy\_class\_C + \ldots
-\end{equation*} \ , 
+total\_loss = binary\_cross\_entropy\_class\_A + binary\_cross\_entropy\_class\_B + binary\_cross\_entropy\_class\_C + \ldots \ , 
 $$ 
 where $\ binary\_cross\_entropy\_class\_X = - p(X) \log ((X)) - (1 - p(X)) \log (1 - q(X))$ .
 
@@ -537,26 +523,20 @@ Average methods take into account the number of occurrencies of each class in th
 
   It is the ordinary mean between single class F1 score.
     $$
-    \begin{equation*}
       Macro \ average \ F1-score = \frac{\sum_{X=1}^N F1-score\_class\_X}{N} \ ,
-    \end{equation*}
     $$
     where $N$ is the number of classes.
 
 * **Weighted average F1 score**
   The weighted-average F1 score takes into account the support (number ofoccurrences in the test set) of each class. The "weight" refers to the proportion of the support of each class in relation to the sum of all the support values, $w_{class\_X} = \frac{\text{support of class X}}{\text{total number of supports}}$ .
   $$
-  \begin{equation*}
     Weighted \ average \ F1-score = \sum_{X=1}^N F1-score\_class\_X \cdot w_{class\_X} \ .
-  \end{equation*}
   $$
 
 * **Micro average F1 score**
   The micro-average F1 score calculates an overall mean F1 score by counting the sums of true positives (TP), false negatives (FN) and false positives (FP)
   $$
-  \begin{equation*}
     Micro \ average \ F1-score =  \frac{TP}{TP + \frac{1}{2}(FP + FN)} \ .
-  \end{equation*}
   $$
   The micro-average F1 score calculates the percentage of correctly ranked observations on all observations.
 
