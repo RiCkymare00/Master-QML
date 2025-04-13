@@ -2,6 +2,7 @@
 ## Table of Contents <!-- omit in toc -->
 - [Convolutions from scratch](#convolutions-from-scratch)
   - [Edge detection](#edge-detection)
+  - [📸 What does `f(x, y)` represent in image processing?](#-what-does-fx-y-represent-in-image-processing)
   - [Convolutions: basic concepts](#convolutions-basic-concepts)
     - [kernels](#kernels)
   - [Understanding convolutions applied to images](#understanding-convolutions-applied-to-images)
@@ -18,6 +19,14 @@
     - [CNN vs. Fully connected NN](#cnn-vs-fully-connected-nn)
   - [Other layers in CNNs: Pooling](#other-layers-in-cnns-pooling)
   - [Architectures](#architectures)
+  - [🧠 LeNet Architecture](#-lenet-architecture)
+    - [Key characteristics:](#key-characteristics)
+    - [Layer-wise structure:](#layer-wise-structure)
+    - [Why is LeNet important?](#why-is-lenet-important)
+  - [🧠 Alexnet Architecture](#-alexnet-architecture)
+    - [Key characteristics:](#key-characteristics-1)
+    - [Layer-wise structure:](#layer-wise-structure-1)
+    - [Why is AlexNet important?](#why-is-alexnet-important)
 - [Transfer learning/ fine tuning](#transfer-learning-fine-tuning)
 - [Evaluation metrics for classification task](#evaluation-metrics-for-classification-task)
 - [Training a Convolutional Neural Network](#training-a-convolutional-neural-network)
@@ -43,6 +52,16 @@ Edge detection is an old-but-gold problem in computer vision that involves detec
 
 An __edge__ is a point of _rapid change in the intensity_ of the image function. 
 The gradient points in the direction of most rapid increase in the intensity of the
+## 📸 What does `f(x, y)` represent in image processing?
+
+In the context of **image processing**, the function `f(x, y)` represents:
+
+✅ The **intensity (brightness) value** of the image at pixel location `(x, y)`
+
+- For a **grayscale image**, `f(x, y) ∈ [0, 255]`, where `0 = black` and `255 = white`
+- For a **color image**, you'd typically have three functions:  
+  `f_R(x, y)`, `f_G(x, y)`, `f_B(x, y)` — one for each RGB channel (Red, Green, Blue)
+
 image function
 * the gradient of an image : $\nabla f = (\frac{\partial f}{\partial x}, \frac{\partial f}{\partial y})$
 
@@ -162,7 +181,7 @@ Similarly to spatially separable convolution, a deep separable convolution divid
 
 # Convolutional Neural Netrwork for image classification
 
-Deep neural networks are normally organized in alternate repetitions of linear and non-linearcoperators. The reason for having multiple layers of this type is to build a hierarchical representation of the data.
+Deep neural networks are normally organized in alternate repetitions of linear and non-linear operators. The reason for having multiple layers of this type is to build a hierarchical representation of the data.
 
 We need a hierarchical representation because the world we live in is a compositional one (The local pixels assemble to form simple patterns like oriented edges. These borders are in turn combined to form patterns that are even more abstract. We can continue to build above these hierarchical representations until we arrive at the objects that we observe in the real world.).
 
@@ -207,7 +226,69 @@ It applies statistics over neighboring features to reduce the size of the featur
 As we can see in the above image, pooling decreases the number of trainable parameters and reduces the computational effort.
 
 ## Architectures
-TO DO
+
+## 🧠 LeNet Architecture
+
+<img src="img/LeNet_Architecture.png" alt="Pooling2" width="700">
+
+LeNet is one of the **earliest convolutional neural network architectures**, developed by **Yann LeCun** in the late 1980s and popularized in the 1990s for digit recognition (like handwritten digits in the MNIST dataset).
+
+### Key characteristics:
+- **Input**: 32×32 grayscale image
+- **Convolutional layers**: Extract features (edges, patterns)
+- **Pooling layers**: Reduce spatial size (subsampling)
+- **Fully connected layers**: Perform classification
+- **Output**: 10 classes (digits 0–9)
+
+###  Layer-wise structure:
+1. **C1**: Convolution (6 filters of size 5×5)
+2. **S2**: Subsampling (average pooling)
+3. **C3**: Convolution (16 filters)
+4. **S4**: Subsampling
+5. **C5**: Convolution → Flattened to a vector
+6. **F6**: Fully connected layer
+7. **Output**: Fully connected softmax layer
+
+---
+
+### Why is LeNet important?
+- It's the **foundation of modern CNNs**
+- Introduced key ideas like **local receptive fields**, **weight sharing**, and **subsampling**
+- Efficient and works well on simple image recognition tasks
+
+## 🧠 Alexnet Architecture
+
+
+<img src="img/Alexnet_2012_architecture.png" alt="Pooling2" width="700">
+AlexNet is a deep convolutional neural network architecture that won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in 2012. It was a breakthrough in deep learning for computer vision, significantly outperforming traditional methods.
+
+### Key characteristics:
+- **Input**: 224×224×3 RGB image
+- **5 convolutional layers**, some followed by max-pooling layers
+- **ReLU activation functions** (instead of tanh or sigmoid)
+- **Dropout** used in fully connected layers to reduce overfitting
+- **Local response normalization** (LRN) to aid generalization
+- **3 fully connected layers** at the end
+- **Output**: 1000-class softmax for classification
+
+### Layer-wise structure:
+1. **Conv1**: 96 filters of size 11×11, stride 4 → Max Pooling
+2. **Conv2**: 256 filters of size 5×5 → Max Pooling
+3. **Conv3**: 384 filters of size 3×3
+4. **Conv4**: 384 filters of size 3×3
+5. **Conv5**: 256 filters of size 3×3 → Max Pooling
+6. **FC6**: Fully connected layer with 4096 units
+7. **FC7**: Fully connected layer with 4096 units
+8. **FC8**: Fully connected layer with 1000 units (softmax output)
+
+---
+
+### Why is AlexNet important?
+- Marked the **first large-scale success of deep CNNs**
+- Introduced **ReLU activations**, which improved training speed
+- Popularized the use of **GPUs for deep learning**
+- Inspired modern architectures like VGG, ResNet, etc.
+
 
 # Transfer learning/ fine tuning
 It consists in taking the characteristics learned on a problem and exploiting them on a new similar problem.  
