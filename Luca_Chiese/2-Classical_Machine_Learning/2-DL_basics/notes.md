@@ -122,7 +122,7 @@ where the superscript $t$ indicates that the algorithm is at the $t$-th iteratio
 
 The choice of value of the learning rate must be such that the cost function reaches its minimum in a not too long time.
 * if the learning rate is too large I could miss the minimum.
-* if the learning reate is too small I will reach them minimum, but the optimization process would take too long
+* if the learning reate is too small I will reach the minimum, but the optimization process would take too long
   
 The best way to solve this problem is to choose an initial value and modify it during the learning, by reducing the learning rate as we move closer and closer to minimum so that we do not miss the minimum.
 
@@ -179,7 +179,7 @@ TO DO
 ## Training
 How is a neural network trained practically?
 
-In order to train a neural network we need is a dataset, i.e., a set of $(x, y)$ samples where $x$ is the **input** and $y$ is the **output** (target). The dataset is divided in three sub-sets: a **training set**, a **validation set**, and a **test set**.
+In order to train a neural network we need a dataset, i.e., a set of $(x, y)$ samples where $x$ is the **input** and $y$ is the **output** (target). The dataset is divided in three sub-sets: a **training set**, a **validation set**, and a **test set**.
 
 <img src="img/datasets.png" alt="Dataset split" width="600">
 
@@ -193,7 +193,6 @@ If this doesn't happen, we may run into the problem of **overfitting**.
 <img src="img/overfitting.png" alt="Overfitting" width="600">
 
 In the above picture, the loss function on the training set has a very nice trend: the network is iteratively optimized on the training samples, its error on these samples decreases. However, the loss function on the validation test does not seem as good.
-
 The model is overfitting!! To avoid this, we should minimize the distance between training and validation performance!
 
 <img src="img/best_epoch.png" alt="Best epoch" width="600">
