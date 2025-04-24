@@ -77,7 +77,7 @@ In the unsupervides pre-training, when a hidden layer is trained, the parameters
 All them get updated in the supervised fine-tuning.
 
 ## PDF and joint probability
-A PDF is the simplest theoretical generative model one can define. Let $f(x)$ and $F(x)$ be the PDF and the Cumulative Density Function (CDF), respectively, they are related as
+A PDF (Probability Density Function) is the simplest theoretical generative model one can define. Let $f(x)$ and $F(x)$ be the PDF and the Cumulative Density Function (CDF), respectively, they are related as
 $$
 \begin{align*}
     f(x) & = \frac{d F(x)}{dx} \\
@@ -105,6 +105,9 @@ The PDF is our model, how do we esstimate its parameters? If the pdf is gaussian
 
 **MLE-MAP** allow to estimate the parameters $\theta$ of a stastistical model based on the observed data $X$. But the difference is that the MLE tries to maximize the conditional probability of $X$ given $\theta$, $p(X|\theta)$.
 
+$p(X|\theta)$ = how likely it is to observe this data if the parameters are $\theta$
+
+
 ### MLE 
 MLE tries to find $\theta$ that maximize the likelihood $p(X|\theta)$, i.e., $\hat{\theta}_{MLE} = \text{arg} \max_\theta p(X|\theta)$.
 
@@ -117,6 +120,8 @@ How do we find $\theta$ that maximize the likelihood $p(X|\theta)$?
 ### MAP
 MAP tries to find the parameter $\theta$ that maximizes the posterior probability.
 From a bayesian perspective, it includes a _priori_ probability $P(\theta)$ that reflects our belief about the parameter values. This improves the optimization process.
+> In altre parole, il **prior** è una distribuzione di probabilità che esprime ciò che crediamo sul parametro $\theta$ *prima* di osservare i dati. Può rappresentare conoscenze precedenti, intuizioni, o semplicemente preferenze su certi valori dei parametri.
+
 $$
     P(\theta | X) = \frac{P(X | \theta) P(\theta)}{P(X)} \qquad \propto P(X | \theta) P(\theta)
 $$
@@ -125,9 +130,11 @@ In this way, the MLE optimization gets modified in the MPA optimization as in th
 <img src="img/MLE-MPA.png" alt="MLE-MPA" width="900">
 
 What happens if $\log P(\theta)$ is constant?  
+This means that the prior $P(\theta)$ does not favor any particular value of $\theta$: it is a flat uniform distribution
 $\log P(\theta)$ plays the role of a regularization term and it can help in reducing overfitting. However, if it is constant we are not regularizing anything and, since the parameters start from a random initialization, the average behavior of many parameters might seem to “cancel out” or stabilize, due to the law of large numbers.
 
 If $\log P(\theta)$ is constant, then MAP reduces to MLE because the constant doesn't affect the location of the maximum.
+
 
 ### Pros and Cons
 * MLE:
@@ -144,6 +151,20 @@ To calculate the conditional probability $P(Y|X)$, they first estimate the __pri
 $$
     posterior = \frac{prior \times likelihood}{evidende} \Rightarrow P(Y|X) = \frac{P(Y) P(X|Y)}{P(X)} \ .
 $$
+
+To make things clearer, let's define the variables:
+
+- $( X)$: the **input data**, e.g., an image, an email, or a feature vector describing a sample.
+- $( Y)$: the **output label**, e.g., "cat", "not spam", "class A".
+
+Discriminative models directly model $P(Y \mid X)$, i.e., the probability of a label given the input data.  
+Generative models, instead, model the **joint probability** $P(X, Y) = P(Y) \cdot P(X \mid Y)$, and then derive $P(Y \mid X)$ via Bayes' theorem:
+
+$$
+P(Y \mid X) = \frac{P(X \mid Y) \cdot P(Y)}{P(X)}
+$$
+
+This means that generative models also capture how the data \( X \) is distributed within each class \( Y \), which allows them to generate new samples or understand the data distribution better.
 
 # Variational AutoEncoders (VAEs)
 ## AutoEncoder
@@ -174,9 +195,17 @@ Then, why to autoencode?
 * representation learning
 
 
-**Pros**: simple, effective compression
+**Pros**:
+- Simple and fast to implement.
+- Effective at compressing high-dimensional data into lower-dimensional representations.
+- Can learn useful features for downstream tasks like classification or clustering.
+- Useful for denoising and dimensionality reduction, even with limited data.
 
-**Limitations**: non-regularized latent, no probabilistic interpretation -> latent spaces are not continuous structured (it is just a set of numbers)
+**Limitations**:
+- The latent space is **not regularized**, which means there is no guarantee that similar inputs will have similar encodings.
+- There is **no probabilistic interpretation**, so we cannot sample meaningfully from the latent space.
+- The latent space (K units) is often **discontinuous and unstructured**: it’s just a collection of vectors without smooth transitions or organization.
+- Cannot generate new data in a principled way (unlike VAEs or GANs).
 
 ## Variational AutoEncoder
 **Main limitation**: autoencoders and deep autoencoders (more hidden layers) do not define a distribution, they do not generate anything, the reproduce!  
@@ -184,7 +213,7 @@ If the latent space is not continuous, the **reconstruction loss** is high, and 
 
 Can we make the latent space continuous? From which we can sample? This is the motivation behind Variational AutoEncoders.
 
-As in autoencoders:
+For Variational AutoEncoders As in A  utoencoders:
 * input $x$, hidden layer output $z$, reconstruction $x$
 * encoder is a neural network with parameters (weights and biases) $\theta$
 * input: $28 \times 28$ pixel photo $\to 784$-dimensional representation
@@ -192,7 +221,7 @@ As in autoencoders:
 * decoder is a neural network with parameters (weights and biases) $\phi$
 
 But in addition:
-* the encoder is characterised by a **probability density function** $q_\theta(z|x)$
+* the encoder is characterised by a **probability density function** $q_\theta(z|x)$  generally a Gaussian
 * efficient compression with this distribution
 * from this distribution, we can sample noisy values of $z$
 * the decoder is characterised by a pdf $p_\phi(x|z)$ from which we try to reconstruct $\tilde{x}$
@@ -212,7 +241,7 @@ l_i (\theta, \phi) = - \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)] +
 $$
 The total loss is the sum of losses from $i$ to $N$.
 
-* The first term is the **reconstruction loss** $: \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)]$ is the expectation taken w.r.t to the encoder's distribution, $q_\theta(z|x_i)$, over the representations, $p_\phi(x_i|z)$. It tells how much the decoder is capable to decode the encoder but from the encoder's point of view.
+* The first term is the **reconstruction loss** $: \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)]$ is the expectation taken w.r.t to the encoder's distribution, $q_\theta(z|x_i)$, over the representations, $p_\phi(x_i|z)$. It tells how much the decoder is capable to decode the encoder but from the encoder's point of view. I use the log because it stabilizes numerical values, simplifies optimization, and has strong informational meaning.
 * The second term is the **Kullback-Leibner Divergence**: summarize the difference (divergence) between the probability function of the encoder $q_\theta(z|x_i)$ and that of the decoder $p(z)$. So, it quantifies how much information is lost when using $q$ to represent $p$.
 
 In the Variational Autoencoder, the latent variables $z$ are supposed to come from a _prior_ distribution, which is specified to be a normal distribution with zero mean and unit variance, i.e. $p(z) = \mathcal{N}(0,1)$. 
@@ -229,7 +258,13 @@ $$
 $$
 
 ## Probabilistic interpretation of VAE
-A variational autoencoder contains a specific probability model of data $x$ and latent variables $z$. We can write the joint probability of the model as $p(x,z) = p(x|z) p(z)$.
+A Variational Autoencoder (VAE) defines a probabilistic model over observed data $\mathbf{x}$ and latent variables $\mathbf{z}$. The joint distribution can be factorized as:
+$$
+p(\mathbf{x}, \mathbf{z}) = p(\mathbf{x} \mid \mathbf{z}) \, p(\mathbf{z})
+$$
+where:
+  - $\mathbf{x}$: observed variable (e.g., input data)
+  - $\mathbf{z}$: latent variable (hidden representation)
 
 * Generative process: for each datopoint $i$:
   - draw $z_i \sim p(z) \to$ drawn from a prior
@@ -242,6 +277,9 @@ A variational autoencoder contains a specific probability model of data $x$ and 
     $$
 
 We already know $p(x|z)$ and $p(z)$ (we sample from the network), but what about $P(X)$? $P(X)$ is the prior probability of the data. How to compute it?  
+
+The value of $p(x)$ indicates how well the generative model can explain or generate the observed data $x$. However, computing $p(x)$ directly is often intractable due to the complexity of the integral. To address this difficulty, an approximate distribution $q(z \mid x)$ is introduced, and a quantity called the Evidence Lower Bound (ELBO) is maximized, which provides a lower bound to $\log p(x)$.
+
 We could marginalize the latent variables: $p(x) = \int p(x|z)p(z) dz$. However, this integral takes time to be evaluated since one needs to evaulate it over all configurations of $z$ (i.e., evaluate this integral for all $z$ that have been generated in the encoder).
 
 We know that $q_\lambda(z|x)$ (from the encoder) has a parameter $\lambda$ which indexes the **family distribution**. If $q$ were gaussian it would be the mean and variance of each data point, $\lambda_i = (\mu_{x_i}, \sigma_{x_i})$. Then the vector $\lambda = (\lambda_1, \lambda_2, \ldots, \lambda_N)$ replaces the parameters vector $\theta = (\theta_1, \theta_2, \ldots, \theta_N)$ and each parameter $\theta_i$ gets substituted by a mean and standard deviation. So, each parameter is a gaussian distribution that allows us to cover better the latent space.
@@ -252,6 +290,7 @@ How can we know how well our variational posterior $q_\lambda(z|x)$ approximates
 $$
    \mathbb{KL}(q_\lambda(z|x) || p(z|x)) = \mathbb{E}_q[\log q_\lambda(z|x)] - \mathbb{E}_q[\log p(x,z)] + \log p(x) \ ,
 $$
+This formula measures how different the approximate distribution $q_\lambda(z \mid x)$ is from the true posterior $p(z \mid x)$. In other words, it quantifies how much information is lost when using a simpler distribution to approximate the true one.
 which quantifies the amount of information that is lost in the data compression. But how do we again compute $p(x)$?  
 Define the **ELBO** (Define Evidence Lower Bound)
 $$
@@ -393,7 +432,7 @@ TO DO
 # Diffusion Models (DFs)
 Based on the __diffusion__ process -> two steps: __forward__ + __backward__.
 
-Alle the generative models we have seen (VAE, GAN, DF) have the concept of mutual challenge between generation and discrimination.
+All the generative models we have seen (VAE, GAN, DF) have the concept of mutual challenge between generation and discrimination.
 
 While in GAN we were providing random noise to a generator to generate an image and train the parameters to associate noise to image, and the discriminator had the job of taking an image and say whether it is fake or not.
 Here, in DF, we gradually add small amounts of (gaussian) noise to the initial image, $x_0$, and the backward process consists in just removing noise from the noisy image.
