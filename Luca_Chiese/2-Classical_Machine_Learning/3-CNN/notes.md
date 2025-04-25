@@ -162,6 +162,21 @@ This process continues until very deep layers extract faces, animals, houses and
 
 <img src="img/stride&padding.png" alt="Stride&Padding" width="800">
 
+> In a convolutional layer:
+> * input: $(N,C_{in},H_{in},W_{in}) \  \text{or} \ (C_{in},H_{in},W_{in})$
+> * output: $(N,C_{out},H_{out},W_{out}) \  \text{or} \ (C_{out},H_{out},W_{out})$
+> 
+> where $N$ is the batch size, $C$ denotes the number of channels, $H$ is the height in pixels, $W$ is width in pixels, and
+>$$
+  \begin{align*}
+    H_{out} & =  \frac{H_{in} + 2 \times \text{padding}[0] - \text{dilation}[0] \times (\text{kernel\_size}[0] - 1) - 1}{\text{stride}[0]} + 1 \\
+    W_{out} & =  \frac{W_{in} + 2 \times \text{padding}[1] - \text{dilation}[1] \times (\text{kernel\_size}[1] - 1) - 1}{\text{stride}[1]} + 1 
+  \end{align*} 
+$$
+
+
+
+
 ## Types of convolutions
 ### Dilated/atrous convolutions
 The atrous convolutions introduce another parameter called _the rate of expansion_. This parameter defines the distance between values of a kernel. A $3 \times 3$ kernel with $2$ expansion rate will have the same field of view as a $5 \times 5$ kernel, while using only $9$ parameters.
