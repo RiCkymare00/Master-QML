@@ -56,7 +56,7 @@ The first appearence was concerning **Statistical Generative Models**, non **Dee
 Think about a simple probability distribution function (pdf), is the pdf modeling a generative model? Can I generate some data knowing the distribution? **YES**, even though it is one-dimensional with no training. The reason is that we can sample a probability $p(x)$ given an input $x$.
 
 ## Discriminative and Generative
-**Goal**: take as input training samples form some distribution and learn a model that represents that distribution.
+**Goal**: take as input training samples from some distribution and learn a model that represents that distribution.
 
 # Preliminary concepts
 ## Deep Neural Networks
@@ -86,9 +86,8 @@ $$
 $$
 
 * PDF:
-  - function a single variable
+  - function of a single variable
   - used to compute $P(X \in [a,b])$
-
 * Joint PDF
   - function of two or more variables
   - used to compute $P(X_1 \in [a_1,b_1] \text{ and } X_2 \in [a_2,b_2])$
@@ -101,9 +100,9 @@ $$
 _Maximum Likelihood Estimation (MLE)_ and _Maximum a Posteriori Estimation (MAP)_.
 
 In general our objective is to estimate the parameters. There are two methods to do so: MLE and MAP.  
-The PDF is our model, how do we esstimate its parameters? If the pdf is gaussian we would use the mean and standard deviation.
+The PDF is our model, how do we estimate its parameters? If the pdf is gaussian we would use the mean and standard deviation.
 
-**MLE-MAP** allow to estimate the parameters $\theta$ of a stastistical model based on the observed data $X$. But the difference is that the MLE tries to maximize the conditional probability of $X$ given $\theta$, $p(X|\theta)$.
+**MLE** and **MAP** allow to estimate the parameters $\theta$ of a stastistical model based on the observed data $X$. But the difference is that the MLE tries to maximize the conditional probability of $X$ given $\theta$, $p(X|\theta)$.
 
 $p(X|\theta)$ = how likely it is to observe this data if the parameters are $\theta$
 
@@ -111,7 +110,7 @@ $p(X|\theta)$ = how likely it is to observe this data if the parameters are $\th
 ### MLE 
 MLE tries to find $\theta$ that maximize the likelihood $p(X|\theta)$, i.e., $\hat{\theta}_{MLE} = \text{arg} \max_\theta p(X|\theta)$.
 
-Are we making any hypothesis on the prior distribution on $\theta$? NO, the probability $p(\theta)$ is not present in the formula.
+Are we making any hypothesis on the prior distribution on $\theta$? **NO**, the probability $p(\theta)$ is not present in the formula.
 
 How do we find $\theta$ that maximize the likelihood $p(X|\theta)$?
 
@@ -125,13 +124,14 @@ From a bayesian perspective, it includes a _priori_ probability $P(\theta)$ that
 $$
     P(\theta | X) = \frac{P(X | \theta) P(\theta)}{P(X)} \qquad \propto P(X | \theta) P(\theta)
 $$
-In this way, the MLE optimization gets modified in the MPA optimization as in the picture below
+In this way, the MLE optimization gets modified in the MAP optimization as below
 
 <img src="img/MLE-MPA.png" alt="MLE-MPA" width="900">
 
 What happens if $\log P(\theta)$ is constant?  
-This means that the prior $P(\theta)$ does not favor any particular value of $\theta$: it is a flat uniform distribution
-$\log P(\theta)$ plays the role of a regularization term and it can help in reducing overfitting. However, if it is constant we are not regularizing anything and, since the parameters start from a random initialization, the average behavior of many parameters might seem to “cancel out” or stabilize, due to the law of large numbers.
+This means that the prior $P(\theta)$ does not favor any particular value of $\theta$: it is a flat uniform distribution.
+
+$\log P(\theta)$ plays the role of a regularization term and can help in reducing overfitting. However, if it is constant we are not regularizing anything and, since the parameters start from a random initialization, the average behavior of many parameters might seem to “cancel out” or stabilize, due to the law of large numbers.
 
 If $\log P(\theta)$ is constant, then MAP reduces to MLE because the constant doesn't affect the location of the maximum.
 
@@ -142,14 +142,14 @@ If $\log P(\theta)$ is constant, then MAP reduces to MLE because the constant do
   - more prone to overfitting if there is limited data and no regularization/prior is used
 * MAP:
   - can help reduce overfitting by imposing a prior -> often acts like a regularization term
-  - useful when we have domani knowledge or want to encode certain parameter restrictions
+  - useful when we have domain knowledge or want to encode certain parameter restrictions
   
 ## Discriminative vs Generative
 Difference: when we want to calculate the conditional probability of the output given the input, in supervised (**discriminative**) models we only focus on the prior probability of the output, in **generative** models we focus on the prior probability on the input and the conditional probabiliy on the data.
 
-To calculate the conditional probability $P(Y|X)$, they first estimate the __prior__ probability $P(Y)$ and the __likelihood probability__ $P(X|Y)$ from the data provided. Our aim in generative model is to obtain the _posterior_
+To calculate the conditional probability $P(Y|X)$, first estimate the __prior__ probability $P(Y)$ and the __likelihood probability__ $P(X|Y)$ from the data provided. Our aim in generative model is to obtain the _posterior_
 $$
-    posterior = \frac{prior \times likelihood}{evidende} \Rightarrow P(Y|X) = \frac{P(Y) P(X|Y)}{P(X)} \ .
+    posterior = \frac{prior \times likelihood}{evidence} \Rightarrow P(Y|X) = \frac{P(Y) P(X|Y)}{P(X)} \ .
 $$
 
 To make things clearer, let's define the variables:
@@ -208,13 +208,13 @@ Then, why to autoencode?
 - Cannot generate new data in a principled way (unlike VAEs or GANs).
 
 ## Variational AutoEncoder
-**Main limitation**: autoencoders and deep autoencoders (more hidden layers) do not define a distribution, they do not generate anything, the reproduce!  
+**Main limitation**: autoencoders and deep autoencoders (more hidden layers) do not define a distribution, they do not generate anything, they reproduce!  
 If the latent space is not continuous, the **reconstruction loss** is high, and we can sample correctly only in correspondence of training data.
 
 Can we make the latent space continuous? From which we can sample? This is the motivation behind Variational AutoEncoders.
 
-For Variational AutoEncoders As in A  utoencoders:
-* input $x$, hidden layer output $z$, reconstruction $x$
+For Variational AutoEncoders, as in AutoEncoders:
+* input $x$, hidden layer output $z$, reconstruction $\tilde{x}$
 * encoder is a neural network with parameters (weights and biases) $\theta$
 * input: $28 \times 28$ pixel photo $\to 784$-dimensional representation
 * hidden layer $len(z)$ is much smaller than $784$
@@ -232,16 +232,16 @@ Information from the original $784$-dimensional vector cannot be perfectly trans
 How much information is lost?
 
 ## KL Divergence
-The Kullback-Leibler (KL) divergence quantifies how much information I have lost.
+The Kullback-Leibler (KL) divergence quantifies how much information is lost.
 
 Let $\log p_\phi(x|z)$ be the **reconstruction** log-likelihood, that tells me how effectively we have learned to reconstruct an input image $x$, given its latent representation $z$.  
-The **loss function** is a negative log-likelihood with a regularization term (for eache $i$-th sample)
+The **loss function** is a negative log-likelihood with a regularization term (for each $i$-th sample)
 $$
 l_i (\theta, \phi) = - \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)] + \mathbb{KL}(q_\theta(z|x_i) || p(z)) \ .
 $$
 The total loss is the sum of losses from $i$ to $N$.
 
-* The first term is the **reconstruction loss** $: \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)]$ is the expectation taken w.r.t to the encoder's distribution, $q_\theta(z|x_i)$, over the representations, $p_\phi(x_i|z)$. It tells how much the decoder is capable to decode the encoder but from the encoder's point of view. I use the log because it stabilizes numerical values, simplifies optimization, and has strong informational meaning.
+* The first term is the **reconstruction loss** $: \mathbb{E}_{z \sim q_\theta(z|x_i)}[\log p_\phi(x_i|z)]$ is the expectation taken w.r.t. the encoder's distribution, $q_\theta(z|x_i)$, over the representations, $p_\phi(x_i|z)$. It tells how much the decoder is capable to decode the encoder but from the encoder's point of view. We use the $\log$ because it stabilizes numerical values, simplifies optimization, and has strong informational meaning.
 * The second term is the **Kullback-Leibner Divergence**: summarize the difference (divergence) between the probability function of the encoder $q_\theta(z|x_i)$ and that of the decoder $p(z)$. So, it quantifies how much information is lost when using $q$ to represent $p$.
 
 In the Variational Autoencoder, the latent variables $z$ are supposed to come from a _prior_ distribution, which is specified to be a normal distribution with zero mean and unit variance, i.e. $p(z) = \mathcal{N}(0,1)$. 
@@ -270,13 +270,13 @@ where:
   - draw $z_i \sim p(z) \to$ drawn from a prior
   - draw $x_i \sim p(x|z) \to$ drawn from a probability (Bernoulli distributed for black/white images)
 
-* Inference (testing after training)-> Goal: infer good values of $z$ given $x$, or to calculate $p(z|x)$.  
+* Inference (testing after training) -> Goal: infer good values of $z$ given $x$, or to calculate $p(z|x)$.  
     How can we find good values of $z$? Use the Bayes' Theorem
     $$
         p(z|x) = \frac{p(x|z) p(z)}{p(x)}
     $$
 
-We already know $p(x|z)$ and $p(z)$ (we sample from the network), but what about $P(X)$? $P(X)$ is the prior probability of the data. How to compute it?  
+We already know $p(x|z)$ and $p(z)$ (we sample from the network), but what about $p(x)$? $p(x)$ _is the prior probability of the data_. How to compute it?  
 
 The value of $p(x)$ indicates how well the generative model can explain or generate the observed data $x$. However, computing $p(x)$ directly is often intractable due to the complexity of the integral. To address this difficulty, an approximate distribution $q(z \mid x)$ is introduced, and a quantity called the Evidence Lower Bound (ELBO) is maximized, which provides a lower bound to $\log p(x)$.
 
@@ -290,9 +290,9 @@ How can we know how well our variational posterior $q_\lambda(z|x)$ approximates
 $$
    \mathbb{KL}(q_\lambda(z|x) || p(z|x)) = \mathbb{E}_q[\log q_\lambda(z|x)] - \mathbb{E}_q[\log p(x,z)] + \log p(x) \ ,
 $$
-This formula measures how different the approximate distribution $q_\lambda(z \mid x)$ is from the true posterior $p(z \mid x)$. In other words, it quantifies how much information is lost when using a simpler distribution to approximate the true one.
+This formula measures how different the approximate distribution $q_\lambda(z \mid x)$ is from the true posterior $p(z \mid x)$. In other words, it quantifies how much information is lost when using a simpler distribution to approximate the true one,
 which quantifies the amount of information that is lost in the data compression. But how do we again compute $p(x)$?  
-Define the **ELBO** (Define Evidence Lower Bound)
+Define the **ELBO** (Evidence Lower Bound)
 $$
     ELBO(\lambda) = \mathbb{E}_q[\log p(x,z)] - \mathbb{E}_q[\log q_\lambda(z|x)] \ ,
 $$ 
@@ -300,7 +300,7 @@ and isolating
 $$
     \log p(x) = ELBO(\lambda) + \mathbb{KL}(q_\lambda(z|x) || p(z|x)) \ ,
 $$
-from the Jensen's inequality one can state that $KL \geq 0$ (because I cannot gain information compressing data). So, given that $KL \geq 0$ and $\log p(x) \geq 0$, instead of minimizing KL we can maximize $ELBO$. In this way we avoid the computaiton of the prior probability of the data, $\log p(x)$.
+from the Jensen's inequality one can state that $\mathbb{KL} \geq 0$ (because I cannot gain information compressing data). So, given that $\mathbb{KL} \geq 0$ and $\log p(x) \geq 0$, instead of minimizing $\mathbb{KL}$ we can maximize $ELBO$. In this way we avoid the computation of the prior probability of the data, $\log p(x)$.
 
 ## ELBO
 $$
@@ -308,14 +308,14 @@ $$
 $$ 
 the first term is the **reconstruction loss** and the second term is the **compression loss**.
 
-Let's remember now NN.The final step is:
+Let's remember now NN. The final step is:
 1. Parametrize the approximate posterior $q_\theta(z|x, \lambda)$ with an _inference network_ (__encoder__)
 2. Parametrize the likelihood $p(x|z)$ with a _generative network_ (__decoder__) that takes latent variables $z$ and outputs parameters to the data distribution $p_\phi(x|z)$
 3. $ELBO_i(\theta, \phi)= - l_i(\theta, \phi)$
 4. The inference and generative networks have model parameters $(\theta, \phi)$ while $\lambda$ represent variational parameters
 
 ## Other families of variational bounds
-The combination of reconstruction loss and compression loss can be modified to speed-up the training, to favor the generation and/or discriminationa and so on, depending on the specific task.
+The combination of reconstruction loss and compression loss can be modified to speed-up the training, to favor the generation and/or discrimination and so on, depending on the specific task.
 Other possible formulations that can be used are the following ones
 
 <img src="img/other_var_bounds.png" alt="other variational bounds" width="700">
@@ -323,7 +323,7 @@ Other possible formulations that can be used are the following ones
 ## Summary
 1. **Model parameters** (often denoted $\theta, \phi$):
     * $\theta$ typically refers to the __generative model__ parameters, e.g. the decoder network $p_\theta(x|z)$.
-    * $\phi$ ypically refers to the __inference (recognition) network__ parameters, e.g. the encoder network $q_\phi(z|x)$.
+    * $\phi$ typically refers to the __inference (recognition) network__ parameters, e.g. the encoder network $q_\phi(z|x)$.
     * These parameters are __global__ to the entire dataset. You train one set of $\theta, \phi$ that applies to every datapoint.
 2. **Variational parameters** (often denoted $\lambda$):
     * In classical variational inference, for each datapoint $x^{(i)}$, you might introduce a local variational distribution $q_{\lambda^{(i)}}(z)$ with its own parameters $\lambda^{(i)}$.
@@ -342,7 +342,7 @@ Hence, the pratical difference is:
 
 That is why we often talk about **global** and **local** parameters in a variational framework. In typical VAE implementations, we only see the global $\theta, \phi$ in code, but conceptually each datapoint has its own **local** latent distribution characterized by the mean $\mu_\phi(x)$ and variance $\sigma_\phi(x)$, which can be seen as its local $\lambda$.
 
-In the formula $\tilde{x} = UVx$, $U$ and $V$ do not contain parameters in the sense of a neural network which have an activation function, but they are neurons that are characterized by a probability density function, each of them having its own mean and standard deviation. Then each global $\theta$ parameter has its own local $\lambda$ which, in a gaussian sense, is represented by the mean and standard deviation.
+In the formula $\tilde{x} = UVx$, $U$ and $V$ do not contain parameters in the sense of a neural network which has an activation function, but they are neurons that are characterized by a probability density function, each of them having its own mean and standard deviation. Then each global $\theta$ parameter has its own local $\lambda$ which, in a gaussian sense, is represented by the mean and standard deviation.
 
 # Generative Adversarial Networks (GANs)
 Two NN: __generator__ + __discriminator__
@@ -367,7 +367,7 @@ But, how do we optimize the parameters? This is given by the formula:
 
 <img src="img/min_max_optimization.png" alt="min max optimization" width="800">
 
-We are trying to do a simultaneous min max optimization, that is minimize w.r.t $\theta_g$ and maximize w.r.t $\theta_d$.
+We are trying to do a simultaneous min max optimization, that is minimize w.r.t. $\theta_g$ and maximize w.r.t. $\theta_d$.
 The first term, the **likelihood of true data**, is the probability the discriminator actually disciminates.
 The second term is the **likelihood of generated data**; when this term is zero there is no loss meaning that the generated data are exactly what the discriminator is expecting.
 
@@ -396,6 +396,12 @@ If the generator improves before the discriminator and starts associating specif
 
 ### Vanishing gradient
 It happens when the discriminator is amazing. 
+The generator updates its parameters using gradients from the discriminator, but:
+* If the discriminator becomes __too good too quickly__, it can easily distinguish fake data from real data.
+* As a result, the discriminator’s output for fake data becomes close to $0$, and the gradient it provides to the generator becomes very small (i.e., __vanishes__).
+* This means $G$ can't learn, because it’s not receiving meaningful updates.
+* When $D(G(z)) \approx 0$, the derivative of $\log(1 - D(G(z)))$ becomes near to zero --> __vanishing gradient__.
+
 
 <img src="img/vanishing_gradient.png" alt="Vanishing gradient" width="800">
 
@@ -403,6 +409,7 @@ The fact that the discriminator is amazing is not useful because our goal is not
 
 How to fix this?  
 * possibilities for non-saturating objectives: if the discriminator is not perfect, we can define some objective function that converges to some non-constant number that depends only on the generator. We add something like $\mathbb{E}[\log G]$ to the $\min \max$ formula, but this would imply that to reduce this term to zero the generator will generates only one image and quickly this possibility becomes useless. This could lead to __mode-collapse__.
+* use __non-saturating loss__ for $G$: minimize $\log D(G(z))$ instead of $\log(1 - D(G(z)))$.
 * restrict capabilities of $\mathcal{D}$ (structurally!!) (limit the number of neurons, use not complex cnn, ...)
 * balance learning $D_{\theta_d}$ and $G_{\theta_g}$
 
@@ -424,7 +431,7 @@ The model becomes fixated on a few dominant modes in the training data and fails
 
 We see that GAN gets fixated on generating only $1$ and $9$.
 
-The solution is provided by WGAN (Wasserstein GANs) in which the __Wasserstein distance__ is used instead than cross-entropy. The Wasserstein-1 distance (or Earth-Mover's distance) is continuous and differentiable _almost everywhere_ with respect to the generator's parameters. This means that when I take the derivative of the loss function during the training, the fact that it is continuous and differentiable implies that there are no discontinuities. This imply that even when generated data has little overlap with the real distribution, the W-distance provides non-zero gradient. This prevents the gradient from vanishing and, as a consequence, prevents the mode-collapse.
+The solution is provided by WGAN (Wasserstein GANs) in which the __Wasserstein distance__ is used instead of the cross-entropy. The Wasserstein-1 distance (or Earth-Mover's distance) is continuous and differentiable _almost everywhere_ with respect to the generator's parameters. This means that when I take the derivative of the loss function during the training, the fact that it is continuous and differentiable implies that there are no discontinuities. This imply that even when generated data has little overlap with the real distribution, the W-distance provides non-zero gradient. This prevents the gradient from vanishing and, as a consequence, prevents the mode-collapse.
 
 #### Mathematical details of Wasserstein distance
 TO DO
@@ -437,7 +444,7 @@ All the generative models we have seen (VAE, GAN, DF) have the concept of mutual
 While in GAN we were providing random noise to a generator to generate an image and train the parameters to associate noise to image, and the discriminator had the job of taking an image and say whether it is fake or not.
 Here, in DF, we gradually add small amounts of (gaussian) noise to the initial image, $x_0$, and the backward process consists in just removing noise from the noisy image.
 
-While in VAE and GAN we can define layers, the initial image is processed by layer1, layer1-output is processed by layer2, and so on. The final output depends on the matrix multiplications taking place at each later. The number of matrix multiplications equal the number of layers. This could be pretty challenging. In the case of DF we proceed as in Markov Chain ($t+1$ depends only on $t$).
+While in VAE and GAN we can define layers, the initial image is processed by layer1, layer1-output is processed by layer2, and so on. The final output depends on the matrix multiplications taking place at each later. The number of matrix multiplications is equal to the number of layers. This could be pretty challenging. In the case of DF we proceed as in a Markov Chain ($t+1$ depends only on $t$).
 
 ### OFF TOPIC: What is a Markov Process?
 
@@ -446,11 +453,11 @@ While in VAE and GAN we can define layers, the initial image is processed by lay
 ## Forward + Reverse
 How do we do forward?
 
-we have to define a __forward process__ $q$ which depends on time $t$ and time $t-1$ and is normally distributed
+We have to define a __forward process__ $q$ which depends on time $t$ and time $t-1$ and is normally distributed
 $$
 q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I) \ ,
 $$
-where $\beta\in [0,1]$ is a parameter called __noise schedule__ (i.e., how much noise is added).
+where $\beta\in [0,1]$ is a parameter called __noise schedule__, which quantifies how much noise is injected in the normal distribution at each step.
 
 So, if $\mathcal{N}$ is a normal distribution, our goal is to predict __mean__ and __variance__ to _predict the reverse process_ (invert the forward) and __generate data__.
 
