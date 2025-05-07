@@ -244,7 +244,7 @@ As we can see in the above image, pooling decreases the number of trainable para
 
 ## 🧠 LeNet Architecture
 
-<img src="img/LeNet_Architecture.png" alt="Pooling2" width="700">
+<img src="img/LeNet_Architecture.png" alt="Pooling2" width="900">
 
 LeNet is one of the **earliest convolutional neural network architectures**, developed by **Yann LeCun** in the late 1980s and popularized in the 1990s for digit recognition (like handwritten digits in the MNIST dataset).
 
@@ -274,7 +274,7 @@ LeNet is one of the **earliest convolutional neural network architectures**, dev
 ## 🧠 Alexnet Architecture
 
 
-<img src="img/Alexnet_2012_architecture.png" alt="Pooling2" width="700">
+<img src="img/Alexnet_2012_architecture.png" alt="Pooling2" width="900">
 
 AlexNet is a deep convolutional neural network architecture that won the ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in 2012. It was a breakthrough in deep learning for computer vision, significantly outperforming traditional methods.
 
@@ -362,7 +362,7 @@ This is often done unless the dataset size is small, i.e. I have a few data. In 
 <img src="img/k-fold.png" alt="k-fold" width="600">
 
 ### Data normalization
-Before starting the training, it can be useful to prepocess data by __normalizing__ them in order to have mean $0$ and variance $1$. We do this by subtracting the mean and $\mu$ and dividing by the standard deviation $\sigma$
+Before starting the training, it can be useful to prepocess data by __normalizing__ them in order to have mean $0$ and variance $1$. We do this by subtracting the mean $\mu$ and dividing by the standard deviation $\sigma$
 $$
 \begin{align*}
 \text{mean:} \quad \mu & = \frac{1}{n} \sum_{i=1}^m x^{(i)} \\
@@ -464,8 +464,8 @@ Cross-entropy loss increases as the predicted probability diverges from the actu
 For a binary classification task, $n=2$, the cross entropy loss function takes the form
 $$
 \begin{equation*}
-  L_{CE} = - \sum_{i=1}^2 t_i \log p_i = - t_1 \log p_1 - (1-t_1) \log (1-p_i) = \left\{ \begin{aligned} 
-  & - \log (1-p_i) \ \text{if the target is} \ 0 \\
+  L_{CE} = - \sum_{i=1}^2 t_i \log p_i = - t_1 \log p_1 - (1-t_1) \log (1-p_1) = \left\{ \begin{aligned} 
+  & - \log (1-p_1) \ \text{if the target is} \ 0 \\
   & - \log p_1 \ \text{if the target is} \ 1
 \end{aligned} \right.
 \end{equation*} \ .
@@ -493,7 +493,7 @@ $$
   cross\_entropy= \sum_X loss\_class\_X \ .
 $$
 
-_Note_: if the target is a one-hot encoded vector (i.e.,it has $1$ in a single position (corresponding to the actual class) and $0$ in all others), then we can actually forget the targets and predictions for all other classes and only calculate the loss for the hot class. In this case we have
+_Note_: if the target is a one-hot encoded vector (i.e., it has $1$ in a single position (corresponding to the actual class) and $0$ in all others), then we can actually forget the targets and predictions for all other classes and only calculate the loss for the hot class. In this case we have
 $$
   loss\_class\_X= - 1 \cdot \log (q(X))  \to \text{categorical cross entropy} \ .
 $$
@@ -533,7 +533,7 @@ F1 \ score & = 2 \frac{precision \cdot recall}{precision + recall} = \frac{TP}{T
 $$
 
 In the case of multi-class classification, for the calculation of the F1 score, averaging methods are used and instead of having multiple F1 scores per class, it is better to have a single number that describes the overall performance.  
-Average methods take into account the number of occurrencies of each class in the test set. This number in calle the __support__. This is useful in the case of unbalanced data set, where the accuracy would be ineffective in assessing the performance of the model.
+Average methods take into account the number of occurrencies of each class in the test set. This number is called the __support__. This is useful in the case of unbalanced data set, where the accuracy would be ineffective in assessing the performance of the model.
 
 * **Macro average F1 score**
 
@@ -544,7 +544,7 @@ Average methods take into account the number of occurrencies of each class in th
     where $N$ is the number of classes.
 
 * **Weighted average F1 score**
-  The weighted-average F1 score takes into account the support (number ofoccurrences in the test set) of each class. The "weight" refers to the proportion of the support of each class in relation to the sum of all the support values, $w_{class\_X} = \frac{\text{support of class X}}{\text{total number of supports}}$ .
+  The weighted-average F1 score takes into account the support (number of occurrences in the test set) of each class. The "weight" refers to the proportion of the support of each class in relation to the sum of all the support values, $w_{class\_X} = \frac{\text{support of class X}}{\text{total number of supports}}$ .
   $$
     Weighted \ average \ F1-score = \sum_{X=1}^N F1-score\_class\_X \cdot w_{class\_X} \ .
   $$
