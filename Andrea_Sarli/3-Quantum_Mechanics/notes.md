@@ -379,7 +379,9 @@ $$
 
 becuase
 
-$\int_{-\infty}^{+\infty} |\Psi(x,t)|^2 dx = 1$
+$$
+\int_{-\infty}^{+\infty} |\Psi(x,t)|^2 dx = 1
+$$
 
 ### 🎯 Implications
 1. **Discrete Energy Levels:** Quantum systems exhibit discrete energy levels $E_n$, obtained by solving the time-independent Schrödinger equation (TISE). These quantized values reflect the allowed stationary states of the system.
@@ -391,4 +393,3 @@ $\int_{-\infty}^{+\infty} |\Psi(x,t)|^2 dx = 1$
 4. **Measurement and Probabilities:** The probability of measuring the energy $E_n$ in a quantum system is $|c_n|^2$, where $c_n$ is the projection of the initial state onto the stationary state $\psi_n$. This connects the mathematical formalism to measurable physical outcomes.
 
 5. **Predictive Power:** By knowing the set of stationary states $\{\psi_n(x)\}$ and their corresponding energies $\{E_n\}$, one can fully reconstruct and predict the dynamics of any quantum state $\Psi(x,t)$, including its time evolution and response to measurements.
-
