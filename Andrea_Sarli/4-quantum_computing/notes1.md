@@ -702,13 +702,13 @@ After roughly $\mathcal{O}(\sqrt{N})$ such rotations, the state aligns closely w
 
 This situation reflects the typical case in quantum search problems where the number of solutions is much smaller than the total space size, i.e., $\# \text{solutions} \ll N$.
 
-The initial superposition $|s\rangle$ lies somewhere between the solution state $|w\rangle$ and the orthogonal complement $|\chi\rangle$ and can be expressed as:
+The initial superposition $|s\rangle$ lies somewhere between the solution state $|\nu\rangle$ and the orthogonal complement $|\chi\rangle$ and can be expressed as:
 
 We can decompose the initial state $|s\rangle$ as a linear combination of two orthonormal vectors:
 $$
-|s\rangle = \alpha |w\rangle + \beta |\chi\rangle
+|s\rangle = \alpha |\nu\rangle + \beta |\chi\rangle
 $$
-where $|w\rangle$ is the (unknown) solution state, and $|\chi\rangle$ is a superposition of all non-solution states (orthogonal to $|w\rangle$). The coefficients $\alpha = \langle w | s \rangle$ and $\beta = \langle \chi | s \rangle$ represent the projections (or overlaps) of $|s\rangle$ onto the solution and non-solution subspaces, respectively.
+where $|\nu\rangle$ is the (unknown) solution state, and $|\chi\rangle$ is a superposition of all non-solution states (orthogonal to $|\nu\rangle$). The coefficients $\alpha = \langle \nu | s \rangle$ and $\beta = \langle \chi | s \rangle$ represent the projections (or overlaps) of $|s\rangle$ onto the solution and non-solution subspaces, respectively.
 
 The angle $\theta$ between the state vector $|s\rangle$ and the non-solution axis $|\chi\rangle$ determines the probability amplitude of the correct answer. At the beginning, $\theta$ is small because $|s\rangle$ is mostly aligned with $|\chi\rangle$, due to the rarity of the solution.
 
