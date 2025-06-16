@@ -15,14 +15,15 @@
    - [Composing Quantum Gates for 2-Qubit Systems](#composing-quantum-gates-for-2-qubit-systems)
    - [Product States vs. Generic States](#product-states-vs-generic-states)
    - [Example: Transformation on a 2-Qubit State](#example-transformation-on-a-2-qubit-state)
-3. [Creating Entanglement with H + CNOT](#creating-entanglement-with-h--cnot)
-4. [Bell States](#bell-states)
-5. [Superdense Coding](#superdense-coding)
+3. [Controlled Gates and the CNOT](#controlled-gates-and-the-cnot)
+4. [Creating Entanglement with H + CNOT](#creating-entanglement-with-h--cnot)
+5. [Bell States](#bell-states)
+6. [Superdense Coding](#superdense-coding)
    - [How the Circuit Works](#how-the-circuit-works)
    - [Matrix Formulation](#matrix-formulation)
-6. [Quantum Teleportation](#quantum-teleportation)
+7. [Quantum Teleportation](#quantum-teleportation)
    - [How the Protocol Works](#how-the-protocol-works)
-7. [No-Cloning Theorem](#no-cloning-theorem)
+8. [No-Cloning Theorem](#no-cloning-theorem)
    - [Statement](#statement)
    - [Consequences](#consequences)
 
@@ -165,7 +166,8 @@ In quantum computing, gates are unitary matrices that act on qubit states to per
     H = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}
     $$
 
-**Example**: Applying H to $|0\rangle$:
+***Calculation for $|0\rangle$:***
+
 $$
 H|0\rangle = \frac{1}{\sqrt{2}} 
 \begin{bmatrix} 
@@ -184,13 +186,13 @@ H|0\rangle = \frac{1}{\sqrt{2}}
 = \frac{|0\rangle + |1\rangle}{\sqrt{2}}
 $$
 
-**Notation:**  
+****Notation:****
 The state $|+\rangle$ is defined as:
 $$
 |+\rangle = \frac{1}{\sqrt{2}}(|0\rangle + |1\rangle)
 $$
 
-**Calculation for $|1\rangle$:**
+****Calculation for $|1\rangle$:****
 
 Applying the Hadamard gate to $|1\rangle$:
 $$
@@ -477,6 +479,7 @@ $$
 
 ## Controlled Gates and the CNOT
 
+
 In multi-qubit quantum circuits, a very important class of operations are **controlled gates**. These gates apply a quantum operation (like X, Z, or H) to a **target qubit** only when a **control qubit** is in the state $|1\rangle$
 
 A general controlled gate is denoted as **C-U**, meaning that a unitary operation \( U \) is applied to the target qubit only if the control qubit is in the state $|1\rangle$. The action on a 2-qubit input state $|x\rangle \otimes |y\rangle$ is:
@@ -490,6 +493,8 @@ where $x \in \{0,1\}$. This notation indicates that if the control qubit is $|0\
 In multi-qubit quantum circuits, a very important class of operations are **controlled gates**. These gates apply a quantum operation (like X, Z, or H) to a **target qubit** only when a **control qubit** is in the state $|1\rangle$
 
 ### CNOT Gate (Controlled-NOT)
+
+<img src="image-13.png" alt="CNOT gate" width="50%">
 
 The **CNOT gate** flips the state of the target qubit if the control qubit is $|1\rangle$. Its matrix in the computational basis:
 
@@ -548,6 +553,8 @@ A common method to create an entangled state is by applying a **Hadamard gate** 
 
 ### Step-by-step
 
+![alt text](image-14.png)
+
 Start with the initial state:
 
 $$
@@ -563,13 +570,54 @@ $$
 2. **Apply CNOT** (control: qubit 0, target: qubit 1):
 
 $$
-\text{CNOT} \left( \frac{1}{\sqrt{2}}(|00\rangle + |10\rangle) \right) = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)
+\text{CNOT} \left( \frac{1}{\sqrt{2}}(|00\rangle + |10\rangle) \right) = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle) = |\beta_{00}\rangle
 $$
 
 This is the **Bell state** $|\Phi^+\rangle$, an entangled state.
 
 $$
 |\Phi^+\rangle = \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)
+$$
+
+### Matrix Formulation
+
+We now express the process in matrix form. The Hadamard gate on the first qubit (tensor product with identity) is:
+
+$$
+H \otimes I =
+\frac{1}{\sqrt{2}}
+\begin{bmatrix}
+1 & 0 & 1 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & -1 & 0 \\
+0 & 1 & 0 & -1
+\end{bmatrix}
+$$
+
+Applying it to the initial state $|00\rangle = \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}$:
+
+$$
+(H \otimes I) |00\rangle = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 0 \\ 1 \\ 0 \end{bmatrix}
+= \frac{1}{\sqrt{2}} (|00\rangle + |10\rangle)
+$$
+
+Then apply the CNOT gate (control: qubit 0, target: qubit 1):
+
+$$
+\text{CNOT} =
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+$$
+
+$$
+\text{CNOT} \left( \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 0 \\ 1 \\ 0 \end{bmatrix} \right)
+= \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 0 \\ 0 \\ 1 \end{bmatrix}
+= \frac{1}{\sqrt{2}}(|00\rangle + |11\rangle)
+= |\Phi^+\rangle
 $$
 
 This combination (H followed by CNOT) is used frequently to generate entanglement in quantum algorithms and communication protocols.
